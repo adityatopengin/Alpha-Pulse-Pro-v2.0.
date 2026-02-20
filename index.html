@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha-Pulse Pro v2.0 | Advanced Market Intelligence</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        
+        <header class="top-bar">
+            <div class="logo">Alpha-Pulse <span>PRO v2.0</span></div>
+            
+            <div class="controls-container">
+                <div class="api-group">
+                    <input type="password" id="api-key" placeholder="Alpha Vantage Key..." class="header-input">
+                </div>
+
+                <div class="toggle-container">
+                    <span class="toggle-label">Swing (Daily)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="timeframe-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="toggle-label text-live">Intraday (5m)</span>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="ticker" value="RELIANCE.BSE" placeholder="Ticker Symbol">
+                    <button id="predict-btn" class="btn-primary">INITIALIZE AI</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="bento-grid">
+            
+            <section class="panel chart-panel">
+                <div class="panel-header">
+                    <h2>Price Action & Probabilistic Tunnel</h2>
+                    <span id="data-status" class="badge badge-neutral">Awaiting Data</span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </section>
+
+            <section class="panel brain-panel">
+                <h2>AI Executive Summary</h2>
+                
+                <div class="target-display">
+                    <span class="muted-label">Predicted Target</span>
+                    <h3 id="ai-target" class="glow-text">₹0.00</h3>
+                </div>
+
+                <div class="confidence-container">
+                    <div class="flex-between">
+                        <span class="muted-label">AI Confidence Score</span>
+                        <span id="confidence-pct" class="text-accent">--%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="confidence-fill" class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="signal-box">
+                    <p id="ai-reasoning" class="text-sm">Neural Network standing by for matrix input...</p>
+                </div>
+            </section>
+
+            <section class="panel tech-panel">
+                <h2>Technical Indicators</h2>
+                <div class="indicator-grid">
+                    <div class="data-card">
+                        <span class="card-title">RSI (14)</span>
+                        <span id="ind-rsi" class="card-value">--</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="card-title">MACD Status</span>
+                        <span id="ind-macd" class="card-value">--</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="card-title">Volume Profile</span>
+                        <span id="ind-vol" class="card-value">--</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="card-title">Pattern Detected</span>
+                        <span id="ind-pattern" class="card-value text-warning">None</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel macro-panel">
+                <h2>Macro & Sentiment</h2>
+                <div class="indicator-grid">
+                    <div class="data-card">
+                        <span class="card-title">News Sentiment</span>
+                        <span id="env-news" class="card-value">--</span>
+                    </div>
+                    <div class="data-card">
+                        <span class="card-title">USD/INR</span>
+                        <span id="env-usd" class="card-value">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel terminal-panel">
+                <div class="panel-header">
+                    <h2>System Terminal</h2>
+                </div>
+                <div id="system-console" class="console-box">
+                    <div class="console-line">[SYSTEM] Alpha-Pulse v2.0 Initialized.</div>
+                    <div class="console-line">[SYSTEM] Ready for Multi-Modal Ingestion.</div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('system-console');
+        function logToTerminal(msg, type = 'info') {
+            const colorClass = type === 'error' ? 'text-danger' : (type === 'success' ? 'text-success' : 'text-muted');
+            terminal.innerHTML += `<div class="console-line ${colorClass}">[${type.toUpperCase()}] ${msg}</div>`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+        
+        // Override default console
+        const oldLog = console.log;
+        console.log = function(...args) {
+            oldLog.apply(console, args);
+            logToTerminal(args.join(' '), 'info');
+        };
+        const oldError = console.error;
+        console.error = function(...args) {
+            oldError.apply(console, args);
+            logToTerminal(args.join(' '), 'error');
+        };
+    </script>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
+
